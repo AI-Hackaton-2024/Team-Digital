@@ -1,6 +1,7 @@
 const OpenAI = require("openai");
 const express = require('express');
 const dotenv = require('dotenv');
+const fs = require("fs");
 const { threadId } = require("worker_threads");
 dotenv.config();
 
@@ -18,127 +19,158 @@ const generatePersonaFeatures = async (data) => {
     messages: [{ role: "system", 
       content:   `You are a helpful assistant with deep knowledge of psychology.
       You are helping a company to generate a common user persona for their product.
-      Include Demographics, Psychographics, Behaviors, Goals, Pain Points, Value Percrptions and Preferences.
+      Include Demographics, Psychographics, Behaviors, Goals, Pain Points, Value Perceptions and Preferences.
       Here is an example of the data and the final output:
-        data: [
-        {"comment": "Absolutely thrilled with the depth of content on AI marketing tools!", "type": "positive"},
-        {"comment": "The instructor made complex AI concepts feel so accessible.", "type": "positive"},
-        {"comment": "LearnPro Academy's platform is super user-friendly and intuitive.", "type": "positive"},
-        {"comment": "I've already started applying what I learned to boost my campaigns.", "type": "positive"},
-        {"comment": "The course pacing was perfect for balancing alongside my job.", "type": "positive"},
-        {"comment": "Real-world examples helped me see the practical use of AI in marketing.", "type": "positive"},
-        {"comment": "Great value for money—I've gained skills worth far more than the cost.", "type": "positive"},
-        {"comment": "Earning this certification has boosted my confidence professionally.", "type": "positive"},
-        {"comment": "The lessons on customer analytics were particularly enlightening.", "type": "positive"},
-        {"comment": "I loved the casual tone; it felt like chatting with a knowledgeable friend.", "type": "positive"},
-        {"comment": "The AI tools introduced are now staples in my marketing toolkit.", "type": "positive"},
-        {"comment": "Fantastic course! It exceeded all my expectations.", "type": "positive"},
-        {"comment": "Navigating through the modules was a breeze on their platform.", "type": "positive"},
-        {"comment": "The enthusiastic teaching style kept me engaged throughout.", "type": "positive"},
-        {"comment": "Applying AI strategies has already improved my customer engagement.", "type": "positive"},
-        {"comment": "Highly recommend this course to any marketing professional!", "type": "positive"},
-        {"comment": "The flexibility of the course allowed me to learn at my own pace.", "type": "positive"},
-        {"comment": "Insights on campaign automation were groundbreaking for me.", "type": "positive"},
-        {"comment": "The formal tone made the content feel professional and credible.", "type": "positive"},
-        {"comment": "Best investment I've made in my career so far.", "type": "positive"},
-        {"comment": "The instructor's real-world experience was invaluable.", "type": "positive"},
-        {"comment": "I appreciated the hands-on approach to learning.", "type": "positive"},
-        {"comment": "The course was engaging and extremely informative.", "type": "positive"},
-        {"comment": "LearnPro Academy knows how to deliver quality education.", "type": "positive"},
-        {"comment": "I've recommended this course to all my colleagues.", "type": "positive"},
-        {"comment": "The certification has already enhanced my resume.", "type": "positive"},
-        {"comment": "Content was up-to-date with the latest AI trends in marketing.", "type": "positive"},
-        {"comment": "The interactive elements kept the learning process dynamic.", "type": "positive"},
-        {"comment": "Super happy with the practical applications taught.", "type": "positive"},
-        {"comment": "The platform's usability made learning so convenient.", "type": "positive"},
-        {"comment": "Enthusiastic about applying these strategies to my business.", "type": "positive"},
-        {"comment": "The course offered great insights into optimizing marketing funnels.", "type": "positive"},
-        {"comment": "Loved how the lessons were structured for busy professionals.", "type": "positive"},
-        {"comment": "The instructor was phenomenal—truly a subject matter expert.", "type": "positive"},
-        {"comment": "The casual tone made complex topics less intimidating.", "type": "positive"},
-        {"comment": "I feel more confident in implementing AI in my marketing strategies.", "type": "positive"},
-        {"comment": "The value provided far outweighs the course fee.", "type": "positive"},
-        {"comment": "Real-life case studies made the content relatable.", "type": "positive"},
-        {"comment": "The course has given me a competitive edge in my field.", "type": "positive"},
-        {"comment": "Impressed by the breadth and depth of topics covered.", "type": "positive"},
-        {"comment": "The certification is a great addition to my professional credentials.", "type": "positive"},
-        {"comment": "The lessons were concise yet comprehensive.", "type": "positive"},
-        {"comment": "I enjoyed the formal approach—it felt like a true academic course.", "type": "positive"},
-        {"comment": "LearnPro Academy's support team was very responsive.", "type": "positive"},
-        {"comment": "The course exceeded my expectations in every way.", "type": "positive"},
-        {"comment": "I appreciated the emphasis on data-driven marketing.", "type": "positive"},
-        {"comment": "The platform worked flawlessly on all my devices.", "type": "positive"},
-        {"comment": "The enthusiastic delivery made learning enjoyable.", "type": "positive"},
-        {"comment": "Already seeing positive results from implementing these techniques.", "type": "positive"},
-        {"comment": "The course offered exceptional value and quality.", "type": "positive"},
-        {"comment": "The instructor's passion for AI and marketing was infectious.", "type": "positive"},
-        {"comment": "I found the course content to be extremely relevant.", "type": "positive"},
-        {"comment": "The flexibility allowed me to balance learning with work.", "type": "positive"},
-        {"comment": "The modules on customer engagement were particularly useful.", "type": "positive"},
-        {"comment": "The platform's interface was clean and easy to use.", "type": "positive"},
-        {"comment": "The course has revitalized my marketing strategies.", "type": "positive"},
-        {"comment": "I loved the mix of formal instruction and practical application.", "type": "positive"},
-        {"comment": "The AI tools discussed are game-changers.", "type": "positive"},
-        {"comment": "Earning this certification has been a milestone in my career.", "type": "positive"},
-        {"comment": "The course was well-structured and comprehensive.", "type": "positive"},
-        {"comment": "The instructor's clarity made learning complex topics easier.", "type": "positive"},
-        {"comment": "Great course! Highly engaging and informative.", "type": "positive"},
-        {"comment": "The content was fresh and cutting-edge.", "type": "positive"},
-        {"comment": "Appreciated the real-world applications showcased.", "type": "positive"},
-        {"comment": "The platform's usability enhanced my learning experience.", "type": "positive"},
-        {"comment": "Feeling enthusiastic about implementing what I've learned.", "type": "positive"},
-        {"comment": "The course offered deep insights into AI-driven marketing.", "type": "positive"},
-        {"comment": "Value for money is exceptional with this course.", "type": "positive"},
-        {"comment": "The certification has already garnered positive attention.", "type": "positive"},
-        {"comment": "The instructor was engaging and very knowledgeable.", "type": "positive"},
-        {"comment": "I enjoyed the interactive quizzes throughout the course.", "type": "positive"},
-        {"comment": "The pacing was just right—not too fast, not too slow.", "type": "positive"},
-        {"comment": "LearnPro Academy provides top-notch educational content.", "type": "positive"},
-        {"comment": "The course has empowered me to use AI confidently.", "type": "positive"},
-        {"comment": "The formal tone lent credibility to the material.", "type": "positive"},
-        {"comment": "Super impressed with the platform's smooth performance.", "type": "positive"},
-        {"comment": "The practical assignments were incredibly beneficial.", "type": "positive"},
-        {"comment": "I feel well-equipped to advance my marketing career.", "type": "positive"}
-      ],
+        data:
+        [ 
+          {"comment": "The programming course was incredibly comprehensive and easy to follow.", "type": "positive"},
+          {"comment": "I loved the interactive coding challenges; they really helped solidify my understanding.", "type": "positive"},
+          {"comment": "The instructor explained complex topics in a simple and relatable way.", "type": "positive"},
+          {"comment": "The platform's user interface is intuitive and user-friendly.", "type": "positive"},
+          {"comment": "I appreciated the real-world projects included in the curriculum.", "type": "positive"},
+          {"comment": "The course provided a solid foundation in programming fundamentals.", "type": "positive"},
+          {"comment": "Great value for money; I learned more than I expected.", "type": "positive"},
+          {"comment": "The lessons were well-structured and easy to digest.", "type": "positive"},
+          {"comment": "I feel confident to start my own programming projects now.", "type": "positive"},
+          {"comment": "The quizzes after each module were very helpful in testing my knowledge.", "type": "positive"},
+          {"comment": "The instructor was engaging and kept me interested throughout.", "type": "positive"},
+          {"comment": "The course covered all the essential topics in depth.", "type": "positive"},
+          {"comment": "I liked the flexibility of being able to learn at my own pace.", "type": "positive"},
+          {"comment": "The support team was responsive and helpful when I had questions.", "type": "positive"},
+          {"comment": "The coding exercises were challenging but rewarding.", "type": "positive"},
+          {"comment": "I appreciated the up-to-date content reflecting current industry practices.", "type": "positive"},
+          {"comment": "The course community was active and supportive.", "type": "positive"},
+          {"comment": "The platform worked smoothly on all my devices.", "type": "positive"},
+          {"comment": "I enjoyed the instructor's teaching style and sense of humor.", "type": "positive"},
+          {"comment": "The course has significantly improved my programming skills.", "type": "positive"},
+          {"comment": "I loved the real-life examples used to explain concepts.", "type": "positive"},
+          {"comment": "The video quality was excellent, making it easy to follow along.", "type": "positive"},
+          {"comment": "The course exceeded my expectations in every way.", "type": "positive"},
+          {"comment": "I feel prepared to apply for programming jobs now.", "type": "positive"},
+          {"comment": "The instructor provided clear and concise explanations.", "type": "positive"},
+          {"comment": "I liked the mix of theory and practical application.", "type": "positive"},
+          {"comment": "The course materials were comprehensive and well-organized.", "type": "positive"},
+          {"comment": "I appreciated the regular updates to the course content.", "type": "positive"},
+          {"comment": "The platform's progress tracking feature kept me motivated.", "type": "positive"},
+          {"comment": "The community forums were a great place to ask questions and learn from others.", "type": "positive"},
+          {"comment": "I enjoyed the project-based learning approach.", "type": "positive"},
+          {"comment": "The course certificates are a nice addition to my resume.", "type": "positive"},
+          {"comment": "The instructor was very knowledgeable and experienced.", "type": "positive"},
+          {"comment": "I appreciated the feedback on my assignments.", "type": "positive"},
+          {"comment": "The course has a good balance of beginner and advanced topics.", "type": "positive"},
+          {"comment": "I liked the downloadable resources provided.", "type": "positive"},
+          {"comment": "The course helped me switch careers into programming.", "type": "positive"},
+          {"comment": "I found the content engaging and informative.", "type": "positive"},
+          {"comment": "The platform's design made it easy to navigate between lessons.", "type": "positive"},
+          {"comment": "I highly recommend this course to anyone interested in programming.", "type": "positive"},
+
+          {"comment": "I found the course material too basic for my level.", "type": "negative"},
+          {"comment": "The instructor's accent made it difficult to understand the lectures.", "type": "negative"},
+          {"comment": "The platform was slow and sometimes unresponsive.", "type": "negative"},
+          {"comment": "There were too many technical issues with the video playback.", "type": "negative"},
+          {"comment": "The course lacked depth in advanced programming topics.", "type": "negative"},
+          {"comment": "I didn't receive enough support when I had questions.", "type": "negative"},
+          {"comment": "The assignments were too easy and not challenging.", "type": "negative"},
+          {"comment": "I felt the course was overpriced for the content provided.", "type": "negative"},
+          {"comment": "The instructor moved too quickly through important concepts.", "type": "negative"},
+          {"comment": "I encountered errors in the code examples provided.", "type": "negative"},
+          {"comment": "The course didn't cover the programming language I was interested in.", "type": "negative"},
+          {"comment": "I found the lessons repetitive and boring.", "type": "negative"},
+          {"comment": "The quizzes didn't accurately test my understanding.", "type": "negative"},
+          {"comment": "The audio quality of the videos was poor.", "type": "negative"},
+          {"comment": "I didn't feel prepared to tackle real-world programming projects after the course.", "type": "negative"},
+          {"comment": "The platform was not compatible with my device.", "type": "negative"},
+          {"comment": "The instructor was not engaging and lacked enthusiasm.", "type": "negative"},
+          {"comment": "I expected more hands-on coding exercises.", "type": "negative"},
+          {"comment": "The course content was outdated and didn't reflect current industry practices.", "type": "negative"},
+          {"comment": "There was no community interaction or support.", "type": "negative"},
+          {"comment": "I didn't receive a certificate upon completion.", "type": "negative"},
+          {"comment": "The course was poorly structured and hard to follow.", "type": "negative"},
+          {"comment": "The pace of the course was too slow.", "type": "negative"},
+          {"comment": "I felt the course didn't offer value for money.", "type": "negative"},
+          {"comment": "The instructor didn't explain the code thoroughly.", "type": "negative"},
+          {"comment": "I encountered bugs in the platform that hindered my progress.", "type": "negative"},
+          {"comment": "The lessons lacked practical application.", "type": "negative"},
+          {"comment": "I was disappointed with the lack of advanced topics.", "type": "negative"},
+          {"comment": "Customer support was unresponsive to my issues.", "type": "negative"},
+          {"comment": "I found the instructor's explanations confusing.", "type": "negative"},
+          {"comment": "It would be great to include more advanced programming topics.", "type": "suggestion"},
+          {"comment": "Offering live coding sessions could enhance the learning experience.", "type": "suggestion"},
+          {"comment": "Including subtitles in different languages would be helpful.", "type": "suggestion"},
+          {"comment": "Providing more challenging assignments would be beneficial.", "type": "suggestion"},
+          {"comment": "Adding a mobile app for the platform would improve accessibility.", "type": "suggestion"},
+          {"comment": "Including a forum for students to collaborate would be useful.", "type": "suggestion"},
+          {"comment": "Offering certificates upon completion would add value.", "type": "suggestion"},
+          {"comment": "Updating the course content to reflect current trends would be appreciated.", "type": "suggestion"},
+          {"comment": "Providing personalized feedback on assignments would enhance learning.", "type": "suggestion"},
+          {"comment": "Adding more real-world projects would help apply the concepts.", "type": "suggestion"},
+          {"comment": "Including code challenges or hackathons could be engaging.", "type": "suggestion"},
+          {"comment": "Offering mentorship opportunities would be beneficial.", "type": "suggestion"},
+          {"comment": "Providing downloadable notes would be helpful for offline study.", "type": "suggestion"},
+          {"comment": "Including more programming languages in the curriculum would be great.", "type": "suggestion"},
+          {"comment": "Improving the audio and video quality would enhance the experience.", "type": "suggestion"},
+          {"comment": "Adding closed captions would aid understanding.", "type": "suggestion"},
+          {"comment": "Offering a free trial or preview could attract more students.", "type": "suggestion"},
+          {"comment": "Including career guidance or job placement assistance would add value.", "type": "suggestion"},
+          {"comment": "Providing more interactive elements in the lessons would be engaging.", "type": "suggestion"},
+          {"comment": "Implementing progress tracking badges could motivate learners.", "type": "suggestion"},
+          {"comment": "Including content on debugging techniques would be helpful.", "type": "suggestion"},
+          {"comment": "Offering flexible payment options could make the course more accessible.", "type": "suggestion"},
+          {"comment": "Adding quizzes after each lesson could reinforce learning.", "type": "suggestion"},
+          {"comment": "Providing a glossary of programming terms would assist beginners.", "type": "suggestion"},
+          {"comment": "Including more visual aids like diagrams would enhance understanding.", "type": "suggestion"},
+          {"comment": "Offering office hours with the instructor could help address questions.", "type": "suggestion"},
+          {"comment": "Integrating peer reviews on assignments could provide diverse feedback.", "type": "suggestion"},
+          {"comment": "Adding a section on programming best practices would be beneficial.", "type": "suggestion"},
+          {"comment": "Including more examples of code in different contexts would help.", "type": "suggestion"},
+          {"comment": "Providing access to an online code editor within the platform would be convenient.", "type": "suggestion"}
+        ]
       output:
-      **Persona Name:** Marketing Professional Enthusiast
+      ### Common User Persona for the Programming Course Product
 
-**Demographics:**
-- **Age:** Likely between 25-40 years old
-- **Gender:** All genders
-- **Occupation:** Marketing professionals, digital marketers, strategists
-- **Experience Level:** Intermediate to advanced marketing knowledge, looking to integrate AI tools into their existing skillset
+#### **Demographics:**
+- **Age:** 21-35 years old
+- **Gender:** Predominantly male, but inclusive of all genders
+- **Education Level:** College students or graduates, often with a background in STEM fields
+- **Occupation:** Aspiring programmers, career switchers, and early-career software developers
+- **Geographic Location:** Primarily urban areas with access to technology; global audience but primarily English-speaking
 
-**Goals:**
-- To enhance marketing skills with cutting-edge AI tools and methodologies.
-- To gain practical, real-world applications of AI in marketing campaigns.
-- To earn a certification that will bolster their professional credentials and confidence.
-- To balance learning with professional commitments through a flexible and user-friendly platform.
+#### **Psychographics:**
+- **Personality Traits:** Motivated, detail-oriented, problem-solvers, and tech-savvy
+- **Values:** Education, career advancement, skill mastery, and practical application of knowledge
+- **Interests:** Technology, software development, coding, innovation, and continuous learning
+- **Lifestyle:** Balanced between work/study and personal life, enjoys online learning, and seeks flexible schedules
 
-**Behavioral Traits:**
-- Interested in continuous learning and professional development.
-- Eager to adopt new technologies and strategies to stay ahead in the competitive marketing field.
-- Motivated by practical, actionable content that can be immediately applied to their work.
-- Values user-friendly platforms that integrate seamlessly with busy schedules.
+#### **Behaviors:**
+- **Learning Style:** Prefers interactive and engaging learning experiences, values real-world projects and practical applications
+- **Engagement:** Active in online communities and forums, seeks feedback and support from peers and instructors
+- **Technology Use:** Regularly uses laptops and mobile devices for learning, prefers platforms that are user-friendly and responsive
+- **Pain Points:** Frustrated by technical issues, outdated content, and lack of advanced topics. Needs more challenging assignments and better support
 
-**Pain Points:**
-- Initially intimidated by the complexity of AI concepts, hence prefers accessible and straightforward instruction.
-- Seeking a balance between a formal educational tone and a more engaging, conversational delivery.
-- Desires content that is kept up-to-date with the latest marketing and AI trends.
+#### **Goals:**
+- **Short-Term Goals:** Master programming fundamentals, complete the course, and build a portfolio of real-world projects
+- **Long-Term Goals:** Secure a programming job, switch careers into tech, or advance in their current role. Gain confidence and proficiency in multiple programming languages
 
-**Preferred Features:**
-- A structured course that is also flexible to accommodate professional workload.
-- Engaging and enthusiastic instructors who simplify complex topics.
-- Hands-on, practical assignments and real-life case studies that enhance learning.
-- Smooth, intuitive platform use across multiple devices.
-- Interactive elements like quizzes to assess understanding and keep the learning dynamic.
+#### **Pain Points:**
+- **Technical Issues:** Platform slowdowns, unresponsive interface, and poor audio/video quality
+- **Content Quality:** Basic material not challenging enough, lack of depth in advanced topics, outdated content
+- **Support:** Insufficient support from instructors and customer service, unresponsive community interaction
+- **Course Structure:** Poorly structured lessons, repetitive content, and lack of practical application
+- **Accessibility:** Incompatibility with devices, lack of subtitles/captions, and no mobile app
 
-**Value Perception:**
-- Strong appreciation for the exceptional value and quality of the course relative to its cost.
-- Views the course as a worthwhile investment for advancing their marketing career.
-- Recognizes the certification as a significant professional milestone that enhances their resume and captures positive attention in the industry.
+#### **Value Perceptions:**
+- **Positive Perceptions:** Comprehensive and easy-to-follow course, engaging instructors, real-world projects, and flexibility in learning pace
+- **Negative Perceptions:** Overpriced courses, lack of advanced topics, and insufficient support during the course
 
-In conclusion, the common user persona for LearnPro Academy's AI marketing course is a driven marketing professional looking to modernize their skillset with AI, benefit from flexible learning solutions, and achieve a recognized certification that advances their career.
+#### **Preferences:**
+- **Learning Environment:** Prefers interactive coding challenges, real-world projects, and a mix of theory and practical application
+- **Platform Features:** Intuitive user interface, progress tracking, downloadable resources, and community forums
+- **Instructor Qualities:** Engaging, clear, and knowledgeable instructors who provide concise explanations and feedback
+- **Course Content:** Up-to-date material reflecting current industry practices, inclusion of multiple programming languages, and a balance of beginner to advanced topics
+- **Support Services:** Responsive support team, personalized feedback on assignments, and active community interaction
+
+### Summary:
+The typical user of this programming course product is a motivated and tech-savvy individual, aged between 21-35, who values continuous learning and career advancement. They prefer an interactive and engaging learning experience, with a strong emphasis on practical application and real-world projects. They seek a user-friendly platform with responsive support and up-to-date content that caters to both beginners and advanced learners. Their main pain points include technical issues, insufficient support, and a lack of challenging and advanced material. They value clear and engaging instruction, flexible learning options, and a community-driven environment.
 From the customer data below generate the common user persona for our product: 
  ${data}` }],
     model: "gpt-4o",
@@ -147,11 +179,27 @@ From the customer data below generate the common user persona for our product:
   return completion.choices[0].message.content;
 }
 
+const uploadData = async (data) => {
+  const id = crypto.randomUUID();
+  const path = `data-${id}.txt`;
+  fs.writeFileSync(path, data);
+  const file = await openai.files.create({
+    file: fs.createReadStream(path),
+    purpose: "assistants",
+  });
+  return file.id;
+}
+
 app.post('/create-persona', async (req, res) => {
-  const { companyName, companyDescription, targetMarket, goal, featureDescription, data } = req.body;
+  const { companyName, description, targetMarket, goal, featureDescription, data, productIdea } = req.body;
   try {
     // analyze the data to generate the persona
     const personaFeatures = await generatePersonaFeatures(data);
+    fileID = await uploadData(data);
+    const vectorStore = await openai.beta.vectorStores.create({
+      name: `${companyName} Persona vector store`,
+      file_ids: [fileID],
+    });
     const assistant = await openai.beta.assistants.create({
       name: `${companyName} Persona`,
       instructions:
@@ -164,10 +212,22 @@ app.post('/create-persona', async (req, res) => {
         Here is the common user persona for our product:
         ${personaFeatures}`,
       tools: [{ type: "file_search" }],
+      tool_resources: {
+        file_search: {
+          vector_store_ids: [vectorStore.id],
+        }
+      },
       model: "gpt-4o",
     });
-    // TODO: upload files
-    res.status(200).send({personaId: assistant.id});
+    const run = await openai.beta.threads.createAndRun({
+      assistant_id: assistant.id,
+      thread: {
+        messages: [
+          { role: "user", content: `Hello! What do you think about my ${productIdea}` },
+        ],
+      },
+    });
+    res.status(200).send({personaId: assistant.id, threadId: run.thread_id});
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -186,7 +246,6 @@ app.post('/chat', async (req, res) => {
     if (!threadId) {
       run = await openai.beta.threads.createAndRun({
         assistant_id: personaId,
-        additional_instructions: "kenfeknfkenfnk", // here add examples
         thread: {
           messages: [
             { role: "user", content: message },
@@ -198,7 +257,6 @@ app.post('/chat', async (req, res) => {
         threadId,
         { 
           assistant_id: personaId,
-          additional_instructions: "This is additional unstrjuction", // here add examples
           additional_messages: [
             { role: "user", content: message },
           ],
