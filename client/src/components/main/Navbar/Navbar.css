@@ -1,0 +1,52 @@
+#navbar{
+    position: fixed;
+    display: flex;
+    height: 100vh;
+    padding: 15px;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+
+#navbar-box{
+    background-color: #081b33;
+    border-radius: 25px;
+    padding: 15px;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#navbar-btns{
+    display: flex;
+    flex-direction: column;
+}
+
+#navbar-btns >div >svg{
+    opacity: 0.7;
+    cursor: pointer;
+    width: 44px;
+    transition: 0.2s ease-in;
+}
+
+#navbar-btns >div >svg:hover{
+    transform: scale(1.1);
+}
+
+.important-svg{
+    transform: scale(1) !important;
+}
+
+
+#navbar-profile >img{
+    cursor: pointer;
+    width: 48px;
+    transition: 0.2s ease-in;
+}
+
+#navbar-profile >img:hover{
+    transform: scale(1.1);
+}
