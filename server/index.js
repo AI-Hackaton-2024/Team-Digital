@@ -274,7 +274,14 @@ app.get('/chat/:threadId', async (req, res) => {
   const {threadId} = req.params;
   try {
     const threadMessages = await openai.beta.threads.messages.list(threadId);
-    res.status(200).send(threadMessages);
+    const messages = threadMessages.data.map(message => {
+      return {
+        role: message.role,
+        content: message.content,
+        createdAt: message.created_at,
+      }
+    });
+    res.status(200).send(messages);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
