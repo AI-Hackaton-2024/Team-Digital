@@ -1,0 +1,66 @@
+#home-page{
+    display: flex;
+    box-sizing: border-box;
+    gap: 10px;
+}
+
+#home-page-right{
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-left: 90px;
+    padding: 25px;
+    gap: 25px;
+}
+
+#home-page-right > label:nth-child(1) {
+    font-size: 80px;
+    letter-spacing: 5px;
+    font-weight: 800;
+    background: linear-gradient(270deg, #12c2e6, #6476de);
+    background-size: 200% 100%; /* Increase size for animation effect */
+    animation: gradient-animation 3s linear infinite; /* Animation properties */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 200% 0; /* Start position */
+    }
+    100% {
+        background-position: 0 0; /* End position */
+    }
+}
+
+#home-page-right >label:nth-child(2){
+    font-size: 30px;
+    font-style: italic;
+}
+
+
+#home-page-best{
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    background-color: white;
+    padding: 5px;
+    border-radius: 11px;
+}
+
+/* #home-page-best::before{
+    left: 25px;
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: calc(100% - 50px);
+    background-color: black;
+    z-index: 0;
+} */
+
+#card-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
