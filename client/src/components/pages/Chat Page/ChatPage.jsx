@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactMarkdown from 'react-markdown';
+import Navbar from "../../main/Navbar/Navbar";
 import styles from "./ChatPage.module.css";
 
 function ChatPage() {
@@ -27,6 +28,7 @@ function ChatPage() {
 
     return (
         <div className={styles.chatContainer}>
+            <Navbar menu = {"chat"}/>
             {initState ? (
                 <div className={styles.chatPanel}>
                     <div className={styles.messageContainer}>

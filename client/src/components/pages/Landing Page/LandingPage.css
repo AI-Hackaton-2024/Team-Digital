@@ -1,0 +1,27 @@
+#landing-page{
+    /* background-color: gray */
+}
+
+.landing-top{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.landing-top >button{
+    height: 50%;
+}
+
+
+
+
+.landing-technologies{
+    display: flex;
+    gap: 20px;
+}
+
+.landing-technologies >img{
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}

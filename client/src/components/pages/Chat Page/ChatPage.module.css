@@ -82,9 +82,7 @@
 .chatContainer {
     display: flex;
     flex-direction: column;
-    padding-top: 20px;
-    min-height: 96vh;
-    max-height: 96vh !important;
+    height: 100vh;
     border-left: 2px solid #C8C8FF;
     background: #F8F7FF;
 }
@@ -92,6 +90,7 @@
 .chatPanel {
     flex: 1;
     overflow-y: auto;
+    margin-left: 100px;
 }
 
 .chatPanelInit {
@@ -114,6 +113,7 @@
 }
 
 .questionPanel {
+    margin-left: 90px;
     padding: 16px;
 }
 
@@ -152,7 +152,7 @@
     background-color: #E1E0FF;
     color: #000;
     width: 80%;
-    height: 100%;
+    height: 70%;
     line-height: 40px;
     border-radius: 12px;
     margin-bottom: 0;
