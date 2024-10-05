@@ -1,0 +1,129 @@
+.containerForm {
+  max-width: 600px; 
+  background: linear-gradient(135deg, #6685FF, #00BFFF); 
+  padding: 30px; 
+  border-radius: 12px; 
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); 
+  text-align: center; 
+  margin: 50px auto; 
+  color: white; 
+}
+
+.form {
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start; 
+}
+
+.buttonContainer {
+  display: flex; 
+  justify-content: space-between; 
+  width: 100%; 
+  margin-top: 20px; 
+}
+
+.buttonContainerEnd {
+  display: flex; 
+  justify-content: flex-end; 
+  width: 100%; 
+  margin-top: 20px; 
+}
+
+input, textarea {
+  padding: 12px; 
+  margin-bottom: 20px; 
+  border: 2px solid rgba(255, 255, 255, 0.6); 
+  border-radius: 4px; 
+  background-color: rgba(255, 255, 255, 0.9); 
+  font-size: 16px; 
+  transition: border 0.3s; 
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(0, 0, 0, 0.5); 
+}
+
+input:focus, textarea:focus {
+  outline: none; 
+  border-color: #00BFFF; 
+}
+
+.addButton {
+  padding: 12px; 
+  background: linear-gradient(135deg, #6685FF, #00BFFF);
+  color: white; 
+  border: none; 
+  border-radius: 20px; 
+  cursor: pointer; 
+  font-size: 16px; 
+  transition: background-color 0.3s, transform 0.3s; 
+  margin-top: 10px; 
+}
+
+.addButton:hover {
+  background: linear-gradient(135deg, #5a7dcf, #028AFF);
+  transform: translateY(-2px); 
+}
+
+.addButton:active {
+  transform: translateY(0); 
+}
+
+.previousButton {
+    padding: 12px; 
+    background-color: #FF4D4D;
+    color: white; 
+    border: none; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    font-size: 16px; 
+    transition: background-color 0.3s, transform 0.3s; 
+    margin-right: 10px;
+}
+
+.previousButton:hover {
+    background-color: #e04343;
+    transform: translateY(-2px); 
+}
+
+.previousButton:active {
+    transform: translateY(0); 
+}
+
+.textarea {
+  padding: 12px; 
+  border: 2px solid rgba(255, 255, 255, 0.6); 
+  border-radius: 4px; 
+  background-color: rgba(255, 255, 255, 0.9); 
+  font-size: 16px; 
+  transition: border 0.3s; 
+  resize: none; 
+  margin-bottom: 20px; 
+}
+
+.textarea::placeholder {
+  color: rgba(0, 0, 0, 0.5); 
+}
+
+.textarea:focus {
+  outline: none; 
+  border-color: #00BFFF; 
+}
+
+label {
+  text-align: left; 
+  margin-bottom: 8px; 
+  font-weight: bold; 
+  color: white; 
+  display: block; 
+}
+
+.buttonContainer {
+    display: flex;
+}
+
+.companyInformationContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
