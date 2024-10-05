@@ -56,7 +56,7 @@ function HomePage() {
             </div>
 
             <div id = "home-page-right">
-                <label>Team Digital</label>
+                <label className='team-digital'>Team Digital</label>
                 <label>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus sit nihil consequatur maiores, tenetur doloremque reprehenderit omnis rem illo quia delectus quo exercitationem debitis corporis voluptate iure, minus ipsa dolor.
                 </label>
