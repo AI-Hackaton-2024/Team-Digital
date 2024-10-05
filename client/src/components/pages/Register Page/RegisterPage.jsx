@@ -23,18 +23,21 @@ function RegisterPage({ formData, setFormData }) {
         <h2>Register</h2>
         <form onSubmit={handleSubmit}>
           <label htmlFor="name">Full Name</label>
-          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required style = {{color: "black"}}/>
           
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required style = {{color: "black"}} />
           
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required />
+          <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required style = {{color: "black"}} />
           
           <label htmlFor="companyName">Company Name</label>
-          <input type="text" id="companyName" name="companyName" value={formData.companyName} onChange={handleChange} required />
+          <input type="text" id="companyName" name="companyName" value={formData.companyName} onChange={handleChange} required style = {{color: "black"}} />
           
-          <button type="submit">Sign up</button>
+          <div style = {{display: "flex", justifyContent: "space-between"}}>
+            <button onClick = {() => {navigate("/")}}>Back</button>
+            <button type="submit">Sign up</button>
+          </div>
         </form>
     </div>
   );
