@@ -5,7 +5,7 @@ import Feature from './Feature';
 import { useNavigate } from 'react-router-dom';
 import { personaService } from '../../../services/personaService.js';
 
-function Form({formData, setFormData}) {
+function Form({formData, setFormData, setThreadId}) {
     const [currentStep, setCurrentStep] = useState(1);
     const navigate = useNavigate();
 
@@ -31,7 +31,9 @@ function Form({formData, setFormData}) {
             if (currentStep === 1) {
                 handleNext();
             } else {
-                await personaService.create(formData);
+                const{personaId, threadId} = await personaService.create(formData);
+                setThreadId(threadId);
+                
                 navigate('/chat');
             }
 

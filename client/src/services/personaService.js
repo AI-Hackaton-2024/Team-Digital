@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export const create = async (formData) => {
+export const create = async (formData
+) => {
     try {
         const response = await axios.post("http://localhost:6001/create-persona", formData, {
             headers: {

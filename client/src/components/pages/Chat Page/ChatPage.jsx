@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactMarkdown from 'react-markdown';
 import styles from "./ChatPage.module.css";
+import { chatService } from "../../../services/chatService";
 
-function ChatPage() {
+function ChatPage({ threadId }) {
     const [messages, setMessages] = useState([]);
     const [oldMessages, setOldMessages] = useState([]);
     const [question, setQuestion] = useState("");
@@ -24,6 +25,16 @@ function ChatPage() {
           messageContainerRef.current?.scrollIntoView({behavior: 'smooth'});
         }
     }, [messages]);
+
+    const chatting = async () => {
+     const ch = await chatService.sendPrompt(threadId);
+
+      console.log("ch", ch);
+    }
+
+    useEffect(() => {
+      chatting()
+    }, [])
 
     return (
         <div className={styles.chatContainer}>
