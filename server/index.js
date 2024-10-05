@@ -5,12 +5,12 @@ const { threadId } = require("worker_threads");
 dotenv.config();
 
 const openai = new OpenAI();
-
+const cors = require('cors');
 const app = express()
-const port = 6000
+const port = 6001
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 const generatePersonaFeatures = async (data) => {
 
@@ -143,13 +143,12 @@ From the customer data below generate the common user persona for our product:
  ${data}` }],
     model: "gpt-4o",
   });
-  console.log(completion.choices[0].message.content);
+  // console.log(completion.choices[0].message.content);
   return completion.choices[0].message.content;
 }
 
-
 app.post('/create-persona', async (req, res) => {
-  const { companyName, description, targetMarket, goal, featureDescription, data } = req.body;
+  const { companyName, companyDescription, targetMarket, goal, featureDescription, data } = req.body;
   try {
     // analyze the data to generate the persona
     const personaFeatures = await generatePersonaFeatures(data);
@@ -157,7 +156,7 @@ app.post('/create-persona', async (req, res) => {
       name: `${companyName} Persona`,
       instructions:
         `You are a perfect customer for ${companyName} with the following attributes:
-        Description: ${description}
+        Description: ${companyDescription}
         TargetMarket: ${targetMarket}
         Goal: ${goal}
         Feature: ${featureDescription}.

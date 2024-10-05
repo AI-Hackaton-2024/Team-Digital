@@ -3,6 +3,7 @@ import styles from './form.module.css';
 import CompanyDescription from './CompanyDescription';
 import Feature from './Feature';
 import { useNavigate } from 'react-router-dom';
+import { personaService } from '../../../services/personaService.js';
 
 function Form({formData, setFormData}) {
     const [currentStep, setCurrentStep] = useState(1);
@@ -30,6 +31,7 @@ function Form({formData, setFormData}) {
             if (currentStep === 1) {
                 handleNext();
             } else {
+                await personaService.create(formData);
                 navigate('/chat');
             }
 
