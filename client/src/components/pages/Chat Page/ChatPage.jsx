@@ -12,12 +12,14 @@ function ChatPage({ threadId }) {
 
     const questionInput = useRef();
     const messageContainerRef = useRef(null);
-    const sendQuestion = () => {
+    const sendQuestion =  async() => {
       setInitState(true);
       setIsLoading(true);
       // questionInput.current.querySelector('input').value = "";
       setMessages([...messages, question]);
       setOldMessages([...oldMessages, { role: 'user', message: question }]);
+
+      await chatting();
     }
 
     useEffect(() => {
@@ -27,14 +29,23 @@ function ChatPage({ threadId }) {
     }, [messages]);
 
     const chatting = async () => {
-     const ch = await chatService.sendPrompt(threadId);
+        console.log(threadId);
+        const ch = await chatService.sendPrompt(threadId);
+        console.log("chat:", ch);
 
-      console.log("ch", ch);
-    }
+        setMessages(ch);
+
+        setIsLoading(false); // Stop loading after the response is received
+    };
 
     useEffect(() => {
-      chatting()
-    }, [])
+      const interval = setInterval(() => {
+        chatting();
+      }, 500);
+      return () => {
+      clearInterval(interval);
+    };
+    }, []);
 
     return (
         <div className={styles.chatContainer}>
@@ -44,9 +55,9 @@ function ChatPage({ threadId }) {
                         {messages.map((message, index) => (
                             <div key={index} className={styles.messageDisplay}>
                                 {index % 2 === 0 ? (
-                                    <p className={styles.userQuestion}  ref={messageContainerRef}>{message}</p>
+                                    <p className={styles.userQuestion}  ref={messageContainerRef}>{message.content}</p>
                                 ) : (
-                                    <ReactMarkdown className={styles.chatAnswer}>{message}</ReactMarkdown>
+                                    <ReactMarkdown className={styles.chatAnswer}>{message.content}</ReactMarkdown>
                                 )}
                             </div>
                         ))}

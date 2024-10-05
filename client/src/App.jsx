@@ -22,7 +22,7 @@ function App() {
     data: JSON.stringify(data)
   });
 
-  const [threadId, setThreadId] = useState(null);
+  const [threadId, setThreadId] = useState("thread_7SOtsnbSrHHdY1jhQ13Q2PMj");
 
   return (
     <div>
@@ -32,7 +32,7 @@ function App() {
             <Route path="/register" element={ <RegisterPage formData={formData} setFormData={setFormData}/> } />
             <Route path="/home" element={ <HomePage formData={formData}/> } />
             <Route path="/chat" element={ <ChatPage threadId={threadId}/> } />
-            <Route path="/form" element={ <Form formData={formData} setFormData={setFormData} setThreadId={setThreadId}/> } />
+            <Route path="/form" element={ <Form formData={formData} setFormData={setFormData} setThreadId={setThreadId} threadId={threadId}/> } />
           </Routes>
         </Router>
     </div>

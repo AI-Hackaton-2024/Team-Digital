@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './form.module.css';
 import CompanyDescription from './CompanyDescription';
 import Feature from './Feature';
 import { useNavigate } from 'react-router-dom';
 import { personaService } from '../../../services/personaService.js';
 
-function Form({formData, setFormData, setThreadId}) {
+function Form({formData, setFormData, setThreadId, threadId}) {
     const [currentStep, setCurrentStep] = useState(1);
     const navigate = useNavigate();
 
@@ -31,16 +31,23 @@ function Form({formData, setFormData, setThreadId}) {
             if (currentStep === 1) {
                 handleNext();
             } else {
-                const{personaId, threadId} = await personaService.create(formData);
-                setThreadId(threadId);
+                const result = await personaService.create(formData);
+                setThreadId(result.threadId);
                 
-                navigate('/chat');
             }
 
         } catch (error) {
             console.error("Error submitting data:", error);
         }
     };
+
+    useEffect(() => {
+        if (threadId) {
+            console.log(threadId);
+            navigate('/chat');
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [threadId]);
 
     return (
         <div className={styles.containerForm}>
