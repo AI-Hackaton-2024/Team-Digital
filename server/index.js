@@ -191,7 +191,7 @@ const uploadData = async (data) => {
 }
 
 app.post('/create-persona', async (req, res) => {
-  const { companyName, description, targetMarket, goal, featureDescription, data, productIdea } = req.body;
+  const { companyName, companyDescription, targetMarket, goal, featureDescription, data } = req.body;
   try {
     // analyze the data to generate the persona
     const personaFeatures = await generatePersonaFeatures(data);
@@ -223,7 +223,7 @@ app.post('/create-persona', async (req, res) => {
       assistant_id: assistant.id,
       thread: {
         messages: [
-          { role: "user", content: `Hello! What do you think about my ${productIdea}` },
+          { role: "user", content: `Hello! What do you think about my ${featureDescription}` },
         ],
       },
     });
