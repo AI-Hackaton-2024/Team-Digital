@@ -1,0 +1,59 @@
+.containerForm {
+  max-width: 440px;
+  background: linear-gradient(135deg, #6685FF, #00BFFF);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 50px;
+  color: white;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  text-align: left;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+input {
+  padding: 15px 0;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 2px solid #00BFFF;
+}
+
+button {
+  padding: 16px;
+  background-color: #00BFFF;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s;
+  width: 120px;
+  margin-top: 12px;
+}
+
+button:hover {
+  background-color: #028AFF;
+}

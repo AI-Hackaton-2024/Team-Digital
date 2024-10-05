@@ -1,9 +1,9 @@
 import './HomePage.css';
 
-function HomePage() {
+function HomePage({formData}) {
   return (
     <div>
-        home
+        {formData.companyName}
     </div>
   );
 }
