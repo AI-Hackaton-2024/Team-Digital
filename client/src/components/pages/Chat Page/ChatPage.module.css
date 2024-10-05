@@ -1,0 +1,179 @@
+.chatWrapper {
+    width: 100%;
+    background: #FFF;
+    padding-top: 0;
+
+}
+
+.messagePanel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chatMessageGpt {
+    margin-bottom: 0px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+}
+
+.messageDisplay {
+    display: flex;
+    flex-direction: column;
+}
+
+.userQuestion {
+    min-width: 40%;
+    max-width: 80%;
+    flex-shrink: 0;
+    align-self: flex-end;
+    border-radius: 12px;
+    background-color: #E0DFFF;
+    padding: 15px;
+    border-bottom-left-radius: 0px;
+}
+
+.chatAnswer {
+    background: #6785FF;
+    min-width: 40%;
+    max-width: 80%;
+    flex-shrink: 0;
+    align-self: flex-start;
+    padding: 15px;
+    border-radius: 12px;
+
+    border-bottom-right-radius: 0px;
+}
+
+.answerWait {
+    min-width: 20%;
+    max-width: 20%;
+    height: 20px;
+    font-size: 1.5rem;
+    margin-left: 10px;
+}
+
+@keyframes loading {
+    0% {
+        content: "";
+    }
+    25% {
+        content: ".";
+    }
+    50% {
+        content: "..";
+    }
+    75% {
+        content: "...";
+    }
+    100% {
+        content: "";
+    }
+}
+
+.loadingDots::after {
+    content: "";
+    animation: loading 1s infinite;
+}
+
+.chatContainer {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    min-height: 96vh;
+    max-height: 96vh !important;
+    border-left: 2px solid #C8C8FF;
+    background: #F8F7FF;
+}
+
+.chatPanel {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.chatPanelInit {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.messageContainer {
+    display: flex;
+    flex-direction: column !important;
+    padding: 0 16px 0 16px;
+    margin-bottom: 16px;
+    flex-grow: 1;
+}
+
+.message {
+    margin-bottom: 20px;
+}
+
+.questionPanel {
+    padding: 16px;
+}
+
+.userMessage {
+    text-align: right;
+}
+
+.messageText {
+    background-color: #E0DFFF;
+    padding: 8px;
+    border-radius: 12px;
+}
+
+.questionInputButtonsContainer {
+    display: flex;
+}
+
+.questionInputSendButton {
+    cursor: pointer;
+}
+
+.sendIcon {
+    width: 32px;
+    height: 34px;
+}
+
+.textFieldContainer {
+    display: flex;
+    height: 80%;
+    align-items: center;
+    margin-right: 15px;
+    justify-content: space-between;
+}
+
+.questionInputTextAreaDisLike {
+    background-color: #E1E0FF;
+    color: #000;
+    width: 80%;
+    height: 100%;
+    line-height: 40px;
+    border-radius: 12px;
+    margin-bottom: 0;
+}
+
+.questionInputDislikeContainer {
+    border-radius: 12px;
+    background: #E1E0FF;
+}
+
+.initText {
+    /* color: #706A83; */
+    text-align: center;
+    font-family: Sarabun;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 24px; /* 150% */
+    letter-spacing: 0.1px;
+}
+
+.buttonSend {
+    margin-top: 0px;
+}
