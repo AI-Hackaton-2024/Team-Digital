@@ -277,7 +277,7 @@ app.get('/chat/:threadId', async (req, res) => {
     const messages = threadMessages.data.map(message => {
       return {
         role: message.role,
-        content: message.content,
+        content: message.content[0].text.value,
         createdAt: message.created_at,
       }
     });
