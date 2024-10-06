@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { personaService } from '../../../services/personaService.js';
 import { motion, AnimatePresence } from 'framer-motion'
 import CompanyDescription from './CompanyDescription'
 import Feature from './Feature'
@@ -47,7 +48,7 @@ const Loader = () => {
   );
 };
 
-export default function Form({ formData, setFormData }) {
+export default function Form({ formData, setFormData, setThreadId, threadId }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate()
@@ -60,9 +61,6 @@ export default function Form({ formData, setFormData }) {
     }))
   }
 
-  const handleNext = () => setCurrentStep(2)
-  const handlePrevious = () => setCurrentStep(1)
-
   const handleSubmit = async (e) => {
    e.preventDefault();
     try {
@@ -70,7 +68,7 @@ export default function Form({ formData, setFormData }) {
         handleNext();
       } else {
         setIsLoading(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await personaService.create(formData)
         setIsLoading(false);
         navigate('/chat');
       }
@@ -82,7 +80,7 @@ export default function Form({ formData, setFormData }) {
 
   const handleFileChange = (event) => {
     const reader = new FileReader();
-    reader.onload = async (event) => { 
+    reader.onload = async (event) => {
         const text = (event.target.result)
         setFormData({
             ...formData,
@@ -91,6 +89,15 @@ export default function Form({ formData, setFormData }) {
       };
       reader.readAsText(event.target.files[0])
   }
+
+
+    const handleNext = (e) => {
+        setCurrentStep(2);
+    };
+
+    const handlePrevious = (e) => {
+        setCurrentStep(1);
+    };
 
     return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">

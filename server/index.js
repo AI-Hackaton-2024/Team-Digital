@@ -5,12 +5,12 @@ const fs = require("fs");
 dotenv.config();
 
 const openai = new OpenAI();
-
+const cors = require('cors');
 const app = express()
-const port = 6000
+const port = 6001
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 const generatePersonaFeatures = async (data) => {
 
@@ -174,7 +174,7 @@ From the customer data below generate the common user persona for our product:
  ${data}` }],
     model: "gpt-4o",
   });
-  console.log(completion.choices[0].message.content);
+  // console.log(completion.choices[0].message.content);
   return completion.choices[0].message.content;
 }
 
@@ -190,7 +190,7 @@ const uploadData = async (data) => {
 }
 
 app.post('/create-persona', async (req, res) => {
-  const { companyName, description, targetMarket, goal, featureDescription, data, productIdea } = req.body;
+  const { companyName, companyDescription, targetMarket, goal, featureDescription, data } = req.body;
   try {
     // analyze the data to generate the persona
     const personaFeatures = await generatePersonaFeatures(data);
@@ -203,7 +203,7 @@ app.post('/create-persona', async (req, res) => {
       name: `${companyName} Persona`,
       instructions:
         `You are a perfect customer for ${companyName} with the following attributes:
-        Description: ${description}
+        Description: ${companyDescription}
         TargetMarket: ${targetMarket}
         Goal: ${goal}
         Feature: ${featureDescription}.
@@ -218,7 +218,7 @@ app.post('/create-persona', async (req, res) => {
       },
       model: "gpt-4o",
     });
-    res.status(200).send({personaId: assistant.id, threadId: run.thread_id});
+    res.status(200).send({personaId: assistant.id});
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -269,7 +269,7 @@ app.get('/chat/:threadId', async (req, res) => {
     const messages = threadMessages.data.map(message => {
       return {
         role: message.role,
-        content: message.content,
+        content: message.content[0].text.value,
         createdAt: message.created_at,
       }
     });
