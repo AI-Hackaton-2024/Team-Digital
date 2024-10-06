@@ -2,14 +2,34 @@
 import React, { useState, useRef, useEffect } from "react"
 import { Send } from "lucide-react"
 import ReactMarkdown from 'react-markdown'
+import axios from "axios"
 
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [personaId, setPesonaId] = useState(null)
+  const [threadId, setThreadId] = useState(null)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+
+  useEffect(() => {
+    setThreadId(localStorage.getItem('personaId'));
+  }, [])
+
+  useEffect(() => {
+    if (threadId) {
+      setInterval(() => {
+        const fetchMessages = async () => {
+          const response = await axios.get(`http://localhost:60001/chat/${threadId}`);
+          setMessages(response.data);
+          setIsLoading(false);
+        }
+        fetchMessages();
+      }, 1000);  
+    }
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -21,19 +41,16 @@ export default function ChatPage() {
     e.preventDefault()
     if (!input.trim()) return
 
-    const newMessage= { role: 'user', content: input }
-    setMessages(prev => [...prev, newMessage])
-    setInput("")
-    setIsLoading(true)
+    setMessages([
+      ...messages,
+      { role: 'user', content: input }
+    ]);
 
-    setTimeout(() => {
-      const assistantMessage= {
-        role: 'assistant',
-        content: "This is a simulated response. In a real application, you would make an API call here to get the assistant's response."
-      }
-      setMessages(prev => [...prev, assistantMessage])
-      setIsLoading(false)
-    }, 1000)
+    const message = input
+    setInput('')
+    setIsLoading(true)
+    const response = await axios.post('http://localhost:60001/chat', { personaId, threadId, message });
+    setThreadId(response.data.threadId);
   }
 
   const handleKeyDown = (e) => {
@@ -88,6 +105,7 @@ export default function ChatPage() {
               className="flex-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Type your message..."
               value={input}
+              disabled={isLoading}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               rows={1}
