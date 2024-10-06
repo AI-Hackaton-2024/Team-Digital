@@ -13,6 +13,23 @@ export default function CompanyDescription({ formData, handleChange, handleFileC
     >
       <div className="space-y-6">
         <div className="space-y-2">
+          <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
+            Company Name
+          </label>
+          <input
+            type="text" 
+            id="companyName"
+            name="companyName"
+            value={formData.companyName}
+            onChange={handleChange}
+            placeholder="Your company name..."
+            className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition duration-200"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+
           <label htmlFor="companyDescription" className="block text-sm font-medium text-gray-700">
             Company Description
           </label>
