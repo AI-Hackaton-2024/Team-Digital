@@ -17,7 +17,8 @@ function App() {
     targetMarket: '',
     goal: '',
     featureDescription: '',
-    customerDescription: ''
+    customerDescription: '',
+    companyData: '',
   });
 
   return (
