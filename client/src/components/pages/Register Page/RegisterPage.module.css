@@ -1,3 +1,4 @@
+
 .containerForm {
   max-width: 440px;
   background: linear-gradient(135deg, #6685FF, #00BFFF);
@@ -10,19 +11,25 @@
   color: white;
 }
 
-form {
+.heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.form {
   display: flex;
   flex-direction: column;
 }
 
-label {
+.label {
   text-align: left;
   margin-bottom: 8px;
   font-weight: bold;
   font-size: 18px;
 }
 
-input {
+.input {
   padding: 15px 0;
   margin-bottom: 20px;
   border: none;
@@ -32,18 +39,23 @@ input {
   font-size: 16px;
 }
 
-input::placeholder {
+.input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
 
-input:focus {
+.input:focus {
   outline: none;
   border-bottom: 2px solid #00BFFF;
 }
 
-button {
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
   padding: 16px;
-  background-color: #00BFFF;
+  background-color: #448bbc9e;
   color: white;
   border: none;
   border-radius: 20px;
@@ -54,6 +66,6 @@ button {
   margin-top: 12px;
 }
 
-button:hover {
-  background-color: #028AFF;
+.button:hover {
+  background-color: #003F7F;
 }
