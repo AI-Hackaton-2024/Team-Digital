@@ -2,15 +2,19 @@ const OpenAI = require("openai");
 const express = require('express');
 const dotenv = require('dotenv');
 const fs = require("fs");
+const cors = require('cors');
 dotenv.config();
 
 const openai = new OpenAI();
 
 const app = express()
-const port = 6000
+const port = 6001
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 
 const generatePersonaFeatures = async (data) => {
 
@@ -218,7 +222,7 @@ app.post('/create-persona', async (req, res) => {
       },
       model: "gpt-4o",
     });
-    res.status(200).send({personaId: assistant.id, threadId: run.thread_id});
+    res.status(200).send({personaId: assistant.id});
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
