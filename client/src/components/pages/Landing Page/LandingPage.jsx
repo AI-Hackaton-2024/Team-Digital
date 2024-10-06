@@ -61,7 +61,7 @@ export default function Component() {
             Harness the power of AI to create detailed, data-driven customer personas in minutes, not months.
           </p>
           <button
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/form")}
             className="w-60 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 flex items-center justify-center mx-auto"
           >
             Try it out <ArrowRight className="ml-2" />
@@ -128,7 +128,7 @@ export default function Component() {
             Join the AI revolution and unlock the power of data-driven personas. Start your journey today!
           </p>
           <button
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/form")}
             className="w-80 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105"
           >
             Get Started
