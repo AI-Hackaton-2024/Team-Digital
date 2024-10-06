@@ -73,7 +73,7 @@ export default function ChatPage() {
     <div className="flex h-screen bg-gray-100">
       <nav className="w-64 bg-white shadow-md">
         <div className="p-4">
-          <h1 className="text-xl font-bold text-gray-800">Chat App</h1>
+          <h1 className="text-xl font-bold text-gray-800">Chat with your persona</h1>
         </div>
       </nav>
       <main className="flex-1 flex flex-col">
