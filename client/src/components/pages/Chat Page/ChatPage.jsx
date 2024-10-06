@@ -16,7 +16,7 @@ export default function ChatPage() {
   useEffect(() => {
     const product = localStorage.getItem('product');
     if (!sessionStorage.getItem('asked') || sessionStorage.getItem('asked') == undefined) {
-      chat(`Hello! What do you think about ${product}?`)
+      chat(`Please provide detailed feedback on the new product. Use the knowledge base containing real customer data to divide customers into several distinct groups based on similar traits. For each group, offer highly detailed, emotionally-driven insights, expressing real opinions, concerns, or excitement as if you are the customer. Make sure the responses reflect the real personas and sound like genuine human feedback rather than AI-generated text. The product is ${product}.`, true)
       sessionStorage.setItem('asked', true)
     }
   }, [])
@@ -42,11 +42,13 @@ export default function ChatPage() {
 
   useEffect(scrollToBottom, [messages])
 
-  const chat = async (input) => {
-    setMessages([
-      ...messages,
-      { role: 'user', content: input }
-    ]);
+  const chat = async (input, skip=false) => {
+    if (!skip) {
+      setMessages([
+        ...messages,
+        { role: 'user', content: input }
+      ]);
+    }
 
     const message = input
     setInput('')

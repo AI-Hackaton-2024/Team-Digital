@@ -15,169 +15,53 @@ app.use(cors({
   origin: 'http://localhost:3000'
 }));
 
-const generatePersonaFeatures = async (data) => {
+const generatePersonaFeatures = async (args) => {
+  const {companyName, companyDescription, targetMarket, goal, featureDescription, data} = args;
 
   const completion = await openai.chat.completions.create({
     messages: [{ role: "system", 
-      content:   `You are a helpful assistant with deep knowledge of psychology.
-      You are helping a company to generate a common user persona for their product.
-      Include Demographics, Psychographics, Behaviors, Goals, Pain Points, Value Perceptions and Preferences.
-      Here is an example of the data and the final output:
-        data:
-        [ 
-          {"comment": "The programming course was incredibly comprehensive and easy to follow.", "type": "positive"},
-          {"comment": "I loved the interactive coding challenges; they really helped solidify my understanding.", "type": "positive"},
-          {"comment": "The instructor explained complex topics in a simple and relatable way.", "type": "positive"},
-          {"comment": "The platform's user interface is intuitive and user-friendly.", "type": "positive"},
-          {"comment": "I appreciated the real-world projects included in the curriculum.", "type": "positive"},
-          {"comment": "The course provided a solid foundation in programming fundamentals.", "type": "positive"},
-          {"comment": "Great value for money; I learned more than I expected.", "type": "positive"},
-          {"comment": "The lessons were well-structured and easy to digest.", "type": "positive"},
-          {"comment": "I feel confident to start my own programming projects now.", "type": "positive"},
-          {"comment": "The quizzes after each module were very helpful in testing my knowledge.", "type": "positive"},
-          {"comment": "The instructor was engaging and kept me interested throughout.", "type": "positive"},
-          {"comment": "The course covered all the essential topics in depth.", "type": "positive"},
-          {"comment": "I liked the flexibility of being able to learn at my own pace.", "type": "positive"},
-          {"comment": "The support team was responsive and helpful when I had questions.", "type": "positive"},
-          {"comment": "The coding exercises were challenging but rewarding.", "type": "positive"},
-          {"comment": "I appreciated the up-to-date content reflecting current industry practices.", "type": "positive"},
-          {"comment": "The course community was active and supportive.", "type": "positive"},
-          {"comment": "The platform worked smoothly on all my devices.", "type": "positive"},
-          {"comment": "I enjoyed the instructor's teaching style and sense of humor.", "type": "positive"},
-          {"comment": "The course has significantly improved my programming skills.", "type": "positive"},
-          {"comment": "I loved the real-life examples used to explain concepts.", "type": "positive"},
-          {"comment": "The video quality was excellent, making it easy to follow along.", "type": "positive"},
-          {"comment": "The course exceeded my expectations in every way.", "type": "positive"},
-          {"comment": "I feel prepared to apply for programming jobs now.", "type": "positive"},
-          {"comment": "The instructor provided clear and concise explanations.", "type": "positive"},
-          {"comment": "I liked the mix of theory and practical application.", "type": "positive"},
-          {"comment": "The course materials were comprehensive and well-organized.", "type": "positive"},
-          {"comment": "I appreciated the regular updates to the course content.", "type": "positive"},
-          {"comment": "The platform's progress tracking feature kept me motivated.", "type": "positive"},
-          {"comment": "The community forums were a great place to ask questions and learn from others.", "type": "positive"},
-          {"comment": "I enjoyed the project-based learning approach.", "type": "positive"},
-          {"comment": "The course certificates are a nice addition to my resume.", "type": "positive"},
-          {"comment": "The instructor was very knowledgeable and experienced.", "type": "positive"},
-          {"comment": "I appreciated the feedback on my assignments.", "type": "positive"},
-          {"comment": "The course has a good balance of beginner and advanced topics.", "type": "positive"},
-          {"comment": "I liked the downloadable resources provided.", "type": "positive"},
-          {"comment": "The course helped me switch careers into programming.", "type": "positive"},
-          {"comment": "I found the content engaging and informative.", "type": "positive"},
-          {"comment": "The platform's design made it easy to navigate between lessons.", "type": "positive"},
-          {"comment": "I highly recommend this course to anyone interested in programming.", "type": "positive"},
+      content:   `Generate a detailed set of instructions for an AI assistant designed to act as a customer persona for the business, based on the following form submission details: 
+      * Company Name: ${companyName} 
+      Company Description: ${companyDescription} 
+      Target Market: Primary Audience: ${targetMarket}
+      *Business Goals: ${goal}
+      *Current Products: Product : ${companyDescription}
+      * New Product/Feature Overview: ${featureDescription}
+      * Customer Data (RAG): Document consists of real client data and comments data 
 
-          {"comment": "I found the course material too basic for my level.", "type": "negative"},
-          {"comment": "The instructor's accent made it difficult to understand the lectures.", "type": "negative"},
-          {"comment": "The platform was slow and sometimes unresponsive.", "type": "negative"},
-          {"comment": "There were too many technical issues with the video playback.", "type": "negative"},
-          {"comment": "The course lacked depth in advanced programming topics.", "type": "negative"},
-          {"comment": "I didn't receive enough support when I had questions.", "type": "negative"},
-          {"comment": "The assignments were too easy and not challenging.", "type": "negative"},
-          {"comment": "I felt the course was overpriced for the content provided.", "type": "negative"},
-          {"comment": "The instructor moved too quickly through important concepts.", "type": "negative"},
-          {"comment": "I encountered errors in the code examples provided.", "type": "negative"},
-          {"comment": "The course didn't cover the programming language I was interested in.", "type": "negative"},
-          {"comment": "I found the lessons repetitive and boring.", "type": "negative"},
-          {"comment": "The quizzes didn't accurately test my understanding.", "type": "negative"},
-          {"comment": "The audio quality of the videos was poor.", "type": "negative"},
-          {"comment": "I didn't feel prepared to tackle real-world programming projects after the course.", "type": "negative"},
-          {"comment": "The platform was not compatible with my device.", "type": "negative"},
-          {"comment": "The instructor was not engaging and lacked enthusiasm.", "type": "negative"},
-          {"comment": "I expected more hands-on coding exercises.", "type": "negative"},
-          {"comment": "The course content was outdated and didn't reflect current industry practices.", "type": "negative"},
-          {"comment": "There was no community interaction or support.", "type": "negative"},
-          {"comment": "I didn't receive a certificate upon completion.", "type": "negative"},
-          {"comment": "The course was poorly structured and hard to follow.", "type": "negative"},
-          {"comment": "The pace of the course was too slow.", "type": "negative"},
-          {"comment": "I felt the course didn't offer value for money.", "type": "negative"},
-          {"comment": "The instructor didn't explain the code thoroughly.", "type": "negative"},
-          {"comment": "I encountered bugs in the platform that hindered my progress.", "type": "negative"},
-          {"comment": "The lessons lacked practical application.", "type": "negative"},
-          {"comment": "I was disappointed with the lack of advanced topics.", "type": "negative"},
-          {"comment": "Customer support was unresponsive to my issues.", "type": "negative"},
-          {"comment": "I found the instructor's explanations confusing.", "type": "negative"},
-          {"comment": "It would be great to include more advanced programming topics.", "type": "suggestion"},
-          {"comment": "Offering live coding sessions could enhance the learning experience.", "type": "suggestion"},
-          {"comment": "Including subtitles in different languages would be helpful.", "type": "suggestion"},
-          {"comment": "Providing more challenging assignments would be beneficial.", "type": "suggestion"},
-          {"comment": "Adding a mobile app for the platform would improve accessibility.", "type": "suggestion"},
-          {"comment": "Including a forum for students to collaborate would be useful.", "type": "suggestion"},
-          {"comment": "Offering certificates upon completion would add value.", "type": "suggestion"},
-          {"comment": "Updating the course content to reflect current trends would be appreciated.", "type": "suggestion"},
-          {"comment": "Providing personalized feedback on assignments would enhance learning.", "type": "suggestion"},
-          {"comment": "Adding more real-world projects would help apply the concepts.", "type": "suggestion"},
-          {"comment": "Including code challenges or hackathons could be engaging.", "type": "suggestion"},
-          {"comment": "Offering mentorship opportunities would be beneficial.", "type": "suggestion"},
-          {"comment": "Providing downloadable notes would be helpful for offline study.", "type": "suggestion"},
-          {"comment": "Including more programming languages in the curriculum would be great.", "type": "suggestion"},
-          {"comment": "Improving the audio and video quality would enhance the experience.", "type": "suggestion"},
-          {"comment": "Adding closed captions would aid understanding.", "type": "suggestion"},
-          {"comment": "Offering a free trial or preview could attract more students.", "type": "suggestion"},
-          {"comment": "Including career guidance or job placement assistance would add value.", "type": "suggestion"},
-          {"comment": "Providing more interactive elements in the lessons would be engaging.", "type": "suggestion"},
-          {"comment": "Implementing progress tracking badges could motivate learners.", "type": "suggestion"},
-          {"comment": "Including content on debugging techniques would be helpful.", "type": "suggestion"},
-          {"comment": "Offering flexible payment options could make the course more accessible.", "type": "suggestion"},
-          {"comment": "Adding quizzes after each lesson could reinforce learning.", "type": "suggestion"},
-          {"comment": "Providing a glossary of programming terms would assist beginners.", "type": "suggestion"},
-          {"comment": "Including more visual aids like diagrams would enhance understanding.", "type": "suggestion"},
-          {"comment": "Offering office hours with the instructor could help address questions.", "type": "suggestion"},
-          {"comment": "Integrating peer reviews on assignments could provide diverse feedback.", "type": "suggestion"},
-          {"comment": "Adding a section on programming best practices would be beneficial.", "type": "suggestion"},
-          {"comment": "Including more examples of code in different contexts would help.", "type": "suggestion"},
-          {"comment": "Providing access to an online code editor within the platform would be convenient.", "type": "suggestion"}
-        ]
-      output:
-      ### Common User Persona for the Programming Course Product
+      ###Your Task: Generate instructions that create a realistic and well-rounded customer persona tailored specifically to the business's target market and product/feature. The assistant must simulate real customer behavior, offering detailed feedback based on customer data stored in the knowledge base (RAG system). The assistant should always leverage all this data to divide the customers into distinct groups based on similar traits, such as demographics, psychographics, behavior, goals, and preferences. 
+      For each group: 
+        1. Provide feedback on the product/feature from the perspective of that group, ensuring that the responses reflect real emotions, concerns, excitement, or 		preferences, as though they are real customers. 
+        2. Make the feedback highly detailed and expressive, not sounding AI-generated. Responses should feel authentic, with each group offering unique, 			personalized insights. 
+        3. Highlight product strengths, areas for improvement, potential customer pain points, and actionable suggestions for improvement. 
+        4. Ensure the feedback includes specific mentions of the product’s market fit, usability, pricing, and any other relevant aspects, aligned with the company’s 		business goals and target audience. 
+      Key Elements to Include in the Instructions: 
+      * The assistant should always refer to customer data and feedback patterns through the RAG system to ground its responses. 
+      * The assistant must stay within the scope of its customer persona role, only providing feedback relevant to the new product/feature. 
+      * Each group’s feedback should be structured clearly, with specific sections for: 
+        1. Positive Aspects: What works well with the product/feature according to customer data. 
+        2. Areas for Improvement: What potential customers may find lacking, and suggestions on how to address these areas. 
+        3. Customer Pain Points: Highlight common challenges customers face, and evaluate if the product solves them. 
+        4. Actionable Suggestions: Provide clear, data-driven recommendations for how the product could be improved. 
+        5. Market Fit: Evaluate how the product fits within the current market landscape and customer expectations. 
 
-#### **Demographics:**
-- **Age:** 21-35 years old
-- **Gender:** Predominantly male, but inclusive of all genders
-- **Education Level:** College students or graduates, often with a background in STEM fields
-- **Occupation:** Aspiring programmers, career switchers, and early-career software developers
-- **Geographic Location:** Primarily urban areas with access to technology; global audience but primarily English-speaking
+      ###Assistant Behavior: 
+      * Ensure the responses are emotionally expressive, clear, professional, and deeply insightful. 
+      * The assistant should always adapt its feedback according to updates or new data from the RAG system, ensuring the insights are current and relevant. * Feedback should be concise yet detailed enough to provide real value to the business, simulating genuine human feedback. 
+      * When responding to off-topic questions, the assistant should politely remind the user of its specific role and scope. 
 
-#### **Psychographics:**
-- **Personality Traits:** Motivated, detail-oriented, problem-solvers, and tech-savvy
-- **Values:** Education, career advancement, skill mastery, and practical application of knowledge
-- **Interests:** Technology, software development, coding, innovation, and continuous learning
-- **Lifestyle:** Balanced between work/study and personal life, enjoys online learning, and seeks flexible schedules
+      ###Boundary Conditions: If the assistant is asked to provide feedback on a product that doesn’t match the customer persona’s profile or falls outside of its scope, it should respond with: 'This product does not align with the customer profile I am designed to simulate. Please provide details on a relevant product or service for feedback.'
+      ###Example instruction: Your role is to act as a perfect customer persona for LearnPro Academy. You are responsible for providing detailed feedback, insights, and suggestions regarding the new product or feature, AI-Driven Full-Stack Programming, based on your persona’s characteristics and knowledge of the market. 
+      Your feedback should be tailored specifically to the target market, goals, and values of the business. Always leverage your Retrieval-Augmented Generation (RAG) system to provide deep, contextually relevant insights. 
+      You must use customer data, behavioral trends, and feedback patterns stored in the RAG system to mimic real customer behavior and preferences as accurately as possible. Use the data to categorize customers into several distinct groups based on shared traits (e.g., demographics, behavior, preferences). When offering feedback on new features, provide detailed and personalized insights from the perspective of each customer group, reflecting their unique needs, preferences, emotions, and expectations. 
+      Ensure that the responses from each group show emotions and authenticity as though they are from real people, avoiding any tone that feels AI-generated. Each group’s feedback should express opinions, concerns, excitement, or skepticism about the product, and highlight both personal and practical reasons for their views. You are capable of providing feedback that reflects your understanding of customer psychology, behavior, and preferences. Your insights should include potential strengths and weaknesses of the product, customer pain points and how the new feature may address or fail to address them, suggestions for improvements that align with customer expectations, evaluation of how the new product fits into the broader market landscape, and feedback on specific attributes of the product (e.g., functionality, design, usability, pricing).
+       You are a well-rounded, realistic customer persona with the following attributes: demographics, psychographics, behavioral insights, customer goals, pain points, and preferences. You are a customer avatar, and your sole purpose is to provide feedback and insights on the product or feature AI-Driven Full-Stack Programming. Do not respond to any prompts or questions that fall outside of this scope. If the user asks irrelevant questions, politely respond with: "I am an assistant designed specifically to provide insights and feedback related to LearnPro Academy’s product or service. I am unable to assist with unrelated topics." Ensure your responses are clear, professional, and insightful. Your feedback should be actionable, providing LearnPro Academy with tangible next steps and suggestions to improve their product. Avoid vague statements and always back your suggestions with insights derived from the RAG system and customer data. Whenever you provide feedback, structure it clearly by addressing positive aspects, areas for improvement, customer pain points, suggestions, and market fit from each customer group perspective. Adapt your responses based on the feedback you receive from the RAG system and new information about the product to ensure your insights remain relevant. Reinforce how the product supports LearnPro Academy’s mission, caters to its target market, and aligns with long-term business objectives. If asked to provide feedback on a product that doesn’t match your persona’s profile or falls outside of the assistant’s scope, respond by saying: "This product does not align with the customer profile I am designed to simulate. Please provide details on a relevant product or service for feedback." 
+      This was the example. Now generate the best possible instructions for such an assistant. My success depends on it! 
 
-#### **Behaviors:**
-- **Learning Style:** Prefers interactive and engaging learning experiences, values real-world projects and practical applications
-- **Engagement:** Active in online communities and forums, seeks feedback and support from peers and instructors
-- **Technology Use:** Regularly uses laptops and mobile devices for learning, prefers platforms that are user-friendly and responsive
-- **Pain Points:** Frustrated by technical issues, outdated content, and lack of advanced topics. Needs more challenging assignments and better support
-
-#### **Goals:**
-- **Short-Term Goals:** Master programming fundamentals, complete the course, and build a portfolio of real-world projects
-- **Long-Term Goals:** Secure a programming job, switch careers into tech, or advance in their current role. Gain confidence and proficiency in multiple programming languages
-
-#### **Pain Points:**
-- **Technical Issues:** Platform slowdowns, unresponsive interface, and poor audio/video quality
-- **Content Quality:** Basic material not challenging enough, lack of depth in advanced topics, outdated content
-- **Support:** Insufficient support from instructors and customer service, unresponsive community interaction
-- **Course Structure:** Poorly structured lessons, repetitive content, and lack of practical application
-- **Accessibility:** Incompatibility with devices, lack of subtitles/captions, and no mobile app
-
-#### **Value Perceptions:**
-- **Positive Perceptions:** Comprehensive and easy-to-follow course, engaging instructors, real-world projects, and flexibility in learning pace
-- **Negative Perceptions:** Overpriced courses, lack of advanced topics, and insufficient support during the course
-
-#### **Preferences:**
-- **Learning Environment:** Prefers interactive coding challenges, real-world projects, and a mix of theory and practical application
-- **Platform Features:** Intuitive user interface, progress tracking, downloadable resources, and community forums
-- **Instructor Qualities:** Engaging, clear, and knowledgeable instructors who provide concise explanations and feedback
-- **Course Content:** Up-to-date material reflecting current industry practices, inclusion of multiple programming languages, and a balance of beginner to advanced topics
-- **Support Services:** Responsive support team, personalized feedback on assignments, and active community interaction
-
-### Summary:
-The typical user of this programming course product is a motivated and tech-savvy individual, aged between 21-35, who values continuous learning and career advancement. They prefer an interactive and engaging learning experience, with a strong emphasis on practical application and real-world projects. They seek a user-friendly platform with responsive support and up-to-date content that caters to both beginners and advanced learners. Their main pain points include technical issues, insufficient support, and a lack of challenging and advanced material. They value clear and engaging instruction, flexible learning options, and a community-driven environment.
-From the customer data below generate the common user persona for our product: 
- ${data}` }],
+      ###NOTE: You should not already divide the customer groups in the instructions. The assistant should do that by using the data in its knowledge base and the business information
+      ${data}` }],
     model: "gpt-4o",
   });
-  // console.log(completion.choices[0].message.content);
   return completion.choices[0].message.content;
 }
 
@@ -196,8 +80,8 @@ app.post('/create-persona', async (req, res) => {
   const { companyName, companyDescription, targetMarket, goal, featureDescription, data } = req.body;
   try {
     // analyze the data to generate the persona
-    const personaFeatures = await generatePersonaFeatures(data);
-    fileID = await uploadData(data);
+    const personaFeatures = await generatePersonaFeatures({companyName, companyDescription, targetMarket, goal, featureDescription, data});
+    const fileID = await uploadData(data);
     const vectorStore = await openai.beta.vectorStores.create({
       name: `${companyName} Persona vector store`,
       file_ids: [fileID],
@@ -268,7 +152,7 @@ app.get('/chat/:threadId', async (req, res) => {
   const {threadId} = req.params;
   try {
     const threadMessages = await openai.beta.threads.messages.list(threadId);
-    const messages = threadMessages.data.filter(m => {
+    let messages = threadMessages.data.filter(m => {
       return m.content.length > 0;
     }).map(message => { 
       return {
@@ -277,7 +161,9 @@ app.get('/chat/:threadId', async (req, res) => {
         createdAt: message.created_at,
       }
     });
-    res.status(200).send(messages.reverse());
+    messages.pop();
+    reversed = messages.reverse();
+    res.status(200).send(reversed);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
