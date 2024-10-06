@@ -2,7 +2,6 @@ const OpenAI = require("openai");
 const express = require('express');
 const dotenv = require('dotenv');
 const fs = require("fs");
-const { threadId } = require("worker_threads");
 dotenv.config();
 
 const openai = new OpenAI();
@@ -219,14 +218,6 @@ app.post('/create-persona', async (req, res) => {
       },
       model: "gpt-4o",
     });
-    const run = await openai.beta.threads.createAndRun({
-      assistant_id: assistant.id,
-      thread: {
-        messages: [
-          { role: "user", content: `Hello! What do you think about my ${productIdea}` },
-        ],
-      },
-    });
     res.status(200).send({personaId: assistant.id, threadId: run.thread_id});
   } catch (error) {
     console.error(error);
@@ -244,12 +235,13 @@ app.post('/chat', async (req, res) => {
     // start a conversation with the persona
     let run;
     if (!threadId) {
-      run = await openai.beta.threads.createAndRun({
-        assistant_id: personaId,
+      const run = await openai.beta.threads.createAndRun({
+        assistant_id: assistant.id,
         thread: {
           messages: [
             { role: "user", content: message },
           ],
+          stream: true,
         },
       });
     } else {
