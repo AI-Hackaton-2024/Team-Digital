@@ -3,8 +3,4 @@ body {
   width: 100%;
   min-height: 94vh;
   margin: 0;
-  background-image: url("./components/assets/cool-background.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
 }
