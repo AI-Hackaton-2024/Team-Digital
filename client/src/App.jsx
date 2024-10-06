@@ -6,6 +6,7 @@ import RegisterPage from './components/pages/Register Page/RegisterPage';
 import HomePage from './components/pages/Home Page/HomePage';
 import ChatPage from './components/pages/Chat Page/ChatPage';
 import Form from './components/pages/Form/Form';
+import data from "./comments (1).json";
 
 function App() {
   const [formData, setFormData] = useState ({
@@ -18,8 +19,10 @@ function App() {
     goal: '',
     featureDescription: '',
     customerDescription: '',
-    companyData: '',
+    data: JSON.stringify(data)
   });
+
+  const [threadId, setThreadId] = useState("thread_7SOtsnbSrHHdY1jhQ13Q2PMj");
 
   return (
     <div>
@@ -28,8 +31,8 @@ function App() {
             <Route path="/" element={ <LandingPage /> } />
             <Route path="/register" element={ <RegisterPage formData={formData} setFormData={setFormData}/> } />
             <Route path="/home" element={ <HomePage formData={formData}/> } />
-            <Route path="/chat" element={ <ChatPage /> } />
-            <Route path="/form" element={ <Form formData={formData} setFormData={setFormData}/> } />
+            <Route path="/chat" element={ <ChatPage threadId={threadId}/> } />
+            <Route path="/form" element={ <Form formData={formData} setFormData={setFormData} setThreadId={setThreadId} threadId={threadId}/> } />
           </Routes>
         </Router>
     </div>
