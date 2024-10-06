@@ -9,27 +9,32 @@ export default function ChatPage() {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [personaId, setPesonaId] = useState(null)
   const [threadId, setThreadId] = useState(null)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
   useEffect(() => {
-    setThreadId(localStorage.getItem('personaId'));
+    const product = localStorage.getItem('product');
+    if (!sessionStorage.getItem('asked') || sessionStorage.getItem('asked') == undefined) {
+      chat(`Hello! What do you think about ${product}?`)
+      sessionStorage.setItem('asked', true)
+    }
   }, [])
 
   useEffect(() => {
     if (threadId) {
       setInterval(() => {
         const fetchMessages = async () => {
-          const response = await axios.get(`http://localhost:60001/chat/${threadId}`);
-          setMessages(response.data);
-          setIsLoading(false);
+          const response = await axios.get(`http://localhost:6001/chat/${threadId}`);
+          if (response.data.length > messages.length) {
+            setMessages(response.data);
+            setIsLoading(false);
+          }
         }
         fetchMessages();
       }, 1000);  
     }
-  }, []);
+  }, [threadId]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -37,10 +42,7 @@ export default function ChatPage() {
 
   useEffect(scrollToBottom, [messages])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!input.trim()) return
-
+  const chat = async (input) => {
     setMessages([
       ...messages,
       { role: 'user', content: input }
@@ -49,8 +51,15 @@ export default function ChatPage() {
     const message = input
     setInput('')
     setIsLoading(true)
-    const response = await axios.post('http://localhost:60001/chat', { personaId, threadId, message });
+    const personaFromLocalStorage = localStorage.getItem('personaId');
+    const response = await axios.post('http://localhost:6001/chat', { personaId: personaFromLocalStorage, threadId, message });
     setThreadId(response.data.threadId);
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!input.trim()) return
+    chat(input)    
   }
 
   const handleKeyDown = (e) => {

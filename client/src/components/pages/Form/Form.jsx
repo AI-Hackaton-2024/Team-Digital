@@ -68,7 +68,9 @@ export default function Form({ formData, setFormData, setThreadId, threadId }) {
         handleNext();
       } else {
         setIsLoading(true);
-        await personaService.create(formData)
+        localStorage.setItem("product", formData.featureDescription);
+        const result = await personaService.create(formData)
+        localStorage.setItem("personaId", result.personaId);
         setIsLoading(false);
         navigate('/chat');
       }

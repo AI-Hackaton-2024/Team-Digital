@@ -6,12 +6,14 @@ const cors = require('cors');
 dotenv.config();
 
 const openai = new OpenAI();
-const cors = require('cors');
 const app = express()
 const port = 6001
 
 app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 
 const generatePersonaFeatures = async (data) => {
 
@@ -236,13 +238,12 @@ app.post('/chat', async (req, res) => {
     // start a conversation with the persona
     let run;
     if (!threadId) {
-      const run = await openai.beta.threads.createAndRun({
-        assistant_id: assistant.id,
+      run = await openai.beta.threads.createAndRun({
+        assistant_id: personaId,
         thread: {
           messages: [
             { role: "user", content: message },
           ],
-          stream: true,
         },
       });
     } else {
@@ -267,14 +268,16 @@ app.get('/chat/:threadId', async (req, res) => {
   const {threadId} = req.params;
   try {
     const threadMessages = await openai.beta.threads.messages.list(threadId);
-    const messages = threadMessages.data.map(message => {
+    const messages = threadMessages.data.filter(m => {
+      return m.content.length > 0;
+    }).map(message => { 
       return {
         role: message.role,
         content: message.content[0].text.value,
         createdAt: message.created_at,
       }
     });
-    res.status(200).send(messages);
+    res.status(200).send(messages.reverse());
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
