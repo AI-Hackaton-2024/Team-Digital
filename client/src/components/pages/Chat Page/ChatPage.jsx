@@ -40,7 +40,7 @@ export default function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
-  useEffect(scrollToBottom, [messages])
+  useEffect(scrollToBottom, [messages.length])
 
   const chat = async (input) => {
     setMessages([
